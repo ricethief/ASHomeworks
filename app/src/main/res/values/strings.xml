@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">GroupSMS</string>
+    <string name="edit_message">EditMessage</string>
+    <string name="edit_sendTo">EditSendTo</string>
+    <string name="btnSend">SEND</string>
+    <string name="btnEditMessage">EDIT MESSAGE</string>
+    <string name="hello_world">Hello World</string>
+    <string name="btnDone">DONE</string>
+    <string name="message_promt" />
+    <string name="btnEditSendTo">Edit SendTo</string>
+    <string name="enterPhone">Enter Phone</string>
+</resources>
