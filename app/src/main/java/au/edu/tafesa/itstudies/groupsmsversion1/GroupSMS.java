@@ -9,7 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.net.Uri;
+import android.telephony.SmsManager;
+import android.widget.Toast;
 
+import java.net.URI;
 
 
 public class GroupSMS extends Activity {
@@ -18,7 +22,7 @@ public class GroupSMS extends Activity {
     public static final String CURRENT_MESSAGE_DATA = "CURRENT_MESSAGE_DATA";
     public static final int NEW_MESSAGE_REQUEST = 1;
     public static final String CURRENT_PHON_DATA = "CURRENT_PHON_DATA";
-    public static final int NEW_PHONE_REQUEST = 1;
+    public static final int NEW_PHONE_REQUEST = 2;
     private String message = "";
     private String phone = "";
 
@@ -32,7 +36,7 @@ public class GroupSMS extends Activity {
         tvMessageDetails.setBackgroundColor(Color.GREEN);
         tvMessageDetails.setMovementMethod(new ScrollingMovementMethod());
         message = "Is it St. Patricks Day?";
-        phone = "";
+        phone = "12345679";
         setSummary();
 
         //responding to an event - the onClick for the Edit Message button
@@ -49,6 +53,32 @@ public class GroupSMS extends Activity {
         HandleButtonSendToOnClick buttonSendToOnClick;
         buttonSendToOnClick = new HandleButtonSendToOnClick();
         btnEditSendTo.setOnClickListener(buttonSendToOnClick);
+
+        Button btnSend;
+        btnSend = this.findViewById(R.id.btnSend);
+        HandleButtonSendOnClick buttonSendOnClick;
+        buttonSendOnClick = new HandleButtonSendOnClick();
+        btnSend.setOnClickListener(buttonSendOnClick);
+//        btnSend.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View v) {
+//////                Intent sendSMSIntent;
+////////                Uri uri = Uri.parse("smsto:" + phone);
+////////                sendSMSIntent = new Intent(Intent.ACTION_SENDTO, uri);
+////////                sendSMSIntent.putExtra("sms body", message);
+////////                startActivity(sendSMSIntent);
+////                try {
+////                    SmsManager smsManager = SmsManager.getDefault();
+////                    smsManager.sendTextMessage(phone, null, message, null, null);
+////                    Toast.makeText(getApplicationContext(), "SMS Sent To " + phone, Toast.LENGTH_LONG).show();
+////                }
+////                catch (Exception e){
+////                    Toast.makeText(getApplicationContext(), e.getMessage(),Toast.LENGTH_LONG).show();
+////
+////                }
+////                }
+//        });
+
     }
 
     private void setSummary() {
@@ -110,6 +140,26 @@ public class GroupSMS extends Activity {
          }
     }
 
+    public class HandleButtonSendOnClick implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+//                Intent sendSMSIntent;
+////                Uri uri = Uri.parse("smsto:" + phone);
+////                sendSMSIntent = new Intent(Intent.ACTION_SENDTO, uri);
+////                sendSMSIntent.putExtra("sms body", message);
+////                startActivity(sendSMSIntent);
+            try {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phone, null, message, null, null);
+                Toast.makeText(getApplicationContext(), "SMS Sent To " + phone, Toast.LENGTH_LONG).show();
+            }
+            catch (Exception e){
+                Toast.makeText(getApplicationContext(), e.getMessage(),Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -118,6 +168,7 @@ public class GroupSMS extends Activity {
             if(resultCode == RESULT_OK){
                 String newMessage = (String) (data.getStringExtra(CURRENT_MESSAGE_DATA));
                 message = newMessage;
+
                 setSummary();
             }
         }
@@ -127,6 +178,7 @@ public class GroupSMS extends Activity {
             if(resultCode == RESULT_OK){
                 String newPhon = (String) (data.getStringExtra(CURRENT_PHON_DATA));
                 phone = newPhon;
+
                 setSummary();
             }
         }
